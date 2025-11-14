@@ -173,3 +173,5 @@ pip-log.txt
 .zig-cache/
 zig-out/
 compile_commands.json
+
+.direnv
