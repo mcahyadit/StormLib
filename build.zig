@@ -59,12 +59,7 @@ pub fn build(b: *std.Build) !void {
     mod_storm.linkSystemLibrary("zlib", .{});
     mod_storm.linkSystemLibrary("bzip2", .{});
 
-    const lib = b.addLibrary(.{
-        .name = "storm",
-        .win32_manifest = b.path("src/DllMain.def"),
-        .root_module = mod_storm,
-    });
-
+    var linkage: std.builtin.LinkMode = .static;
     //================
     // Setting Dynamic/Static
     // Invoke with `-Ddynamic=[true|false]`
@@ -75,11 +70,16 @@ pub fn build(b: *std.Build) !void {
         "Builds as dynamic library on true, static on false",
     ) orelse false;
     if (dynamic) {
-        lib.linkage = .dynamic;
-    } else {
-        lib.linkage = .static;
+        linkage = .dynamic;
     }
     //================
+
+    const lib = b.addLibrary(.{
+        .name = "storm",
+        .linkage = linkage,
+        .win32_manifest = b.path("src/DllMain.def"),
+        .root_module = mod_storm,
+    });
 
     b.installArtifact(lib);
 
