@@ -168,3 +168,8 @@ pip-log.txt
 .DS_Store
 **/project.xcworkspace
 **/xcuserdata
+
+.cache/
+.zig-cache/
+zig-out/
+compile_commands.json
