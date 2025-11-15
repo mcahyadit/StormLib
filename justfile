@@ -1,4 +1,4 @@
-BUILD_SHARED_LIBS:="true"
+dynamic:="true"
 
 all: build
 
@@ -6,5 +6,7 @@ configure:
   zig build cdb
 
 build: configure
-  zig build 
+  zig build -Ddynamic="{{dynamic}}"
 
+test: build
+  zig build test
