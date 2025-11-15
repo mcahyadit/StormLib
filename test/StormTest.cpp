@@ -4459,7 +4459,7 @@ static const LPCSTR Test_CreateMpq_Localized[] =
 #define TEST_CREATE_MPQS
 #define TEST_MISC_MPQS
 
-int _tmain(int argc, TCHAR * argv[])
+extern "C" int test_entry(int argc, TCHAR * argv[])
 {
     DWORD dwErrCode = ERROR_SUCCESS;
 

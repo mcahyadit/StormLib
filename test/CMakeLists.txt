@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 set(TEST_SRC_FILES
-        StormTest.cpp
+        StormTest_entry.cpp
 )
 
 # Option to use the legacy hardcoded paths

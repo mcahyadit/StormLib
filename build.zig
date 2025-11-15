@@ -58,6 +58,8 @@ pub fn build(b: *std.Build) !void {
 
     mod_storm.linkSystemLibrary("zlib", .{});
     mod_storm.linkSystemLibrary("bzip2", .{});
+    mod_storm.linkSystemLibrary("tomcrypt", .{});
+    mod_storm.linkSystemLibrary("tommath", .{});
 
     var linkage: std.builtin.LinkMode = .static;
     //================
@@ -69,6 +71,7 @@ pub fn build(b: *std.Build) !void {
         "dynamic",
         "Builds as dynamic library on true, static on false",
     ) orelse false;
+    std.debug.print("dynamic = {}\n", .{dynamic});
     if (dynamic) {
         linkage = .dynamic;
     }
@@ -82,6 +85,31 @@ pub fn build(b: *std.Build) !void {
     });
 
     b.installArtifact(lib);
+
+    //================
+    // Test
+    //================
+    const test_module = b.createModule(.{
+        .root_source_file = b.path("test/test_wrap.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+        .link_libcpp = true,
+    });
+    test_module.addCSourceFiles(.{
+        .files = &.{
+            "test/StormTest.cpp",
+        },
+    });
+    test_module.addImport("storm", mod_storm);
+    test_module.linkSystemLibrary("alsa", .{});
+    const test_artifact = b.addTest(.{
+        .root_module = test_module,
+    });
+    const test_run = b.addRunArtifact(test_artifact);
+    const test_step = b.step("test", "Run Tests");
+    test_step.dependOn(&test_run.step);
+    //================
 
     try targets.append(b.allocator, lib);
     _ = zcc.createStep(b, "cdb", try targets.toOwnedSlice(b.allocator));
