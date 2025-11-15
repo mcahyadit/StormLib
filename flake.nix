@@ -18,6 +18,11 @@
             # Dependencies
             zlib
             bzip2
+            libtomcrypt
+            libtommath
+
+            # Test
+            alsa-lib
 
             # C++ Tools
             clang-tools
