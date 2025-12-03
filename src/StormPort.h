@@ -27,10 +27,8 @@
 #ifndef __STORMPORT_H__
 #define __STORMPORT_H__
 
-#ifndef __cplusplus
-  #define bool char
-  #define true 1
-  #define false 0
+#if !defined(__cplusplus) && !defined(_MSC_VER)
+  #include <stdbool.h>
 #endif
 
 //-----------------------------------------------------------------------------
